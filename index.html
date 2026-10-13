@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -106,7 +106,7 @@ function fadeOutAvatar(uid) {
     const obj = objects.find(o => o.uid === uid);
     if (!obj) return;
 
-    obj.fade = 1; // start fade
+    obj.fade = 1;
     obj.fading = true;
 
     setTimeout(() => {
@@ -152,33 +152,29 @@ function spawnFloatingAvatar(url, uid) {
             vx: (Math.random() * 2 - 1),
             vy: (Math.random() * 2 - 1),
             size: 220,          // 🔥 aproape dublu
-            bounce: 0,          // bounce
-            fade: 1,            // fade-out opacity
+            bounce: 0,
+            fade: 1,
             fading: false
         });
     });
 }
 
-/* DESEN AVATAR ROTUND + GLOW PULSANT + FADE + BOUNCE */
+/* DESEN AVATAR ROTUND + GLOW + BOUNCE + FADE */
 function drawCircleImage(ctx, o) {
-    const { img, x, y, size, neon, fade, bounce } = o;
+    const { img, x, y, size, neon, fade } = o;
 
     ctx.save();
 
-    // fade-out
     ctx.globalAlpha = fade;
 
-    // glow pulsant
     const glow = 10 + Math.sin(Date.now() / 200) * 6;
+    const bounceOffset = Math.sin(Date.now() / 300) * 10;
 
     ctx.beginPath();
     ctx.arc(x, y, size/2 + glow, 0, Math.PI * 2);
     ctx.strokeStyle = neon;
     ctx.lineWidth = 6;
     ctx.stroke();
-
-    // bounce
-    const bounceOffset = Math.sin(Date.now() / 300 + bounce) * 10;
 
     ctx.beginPath();
     ctx.arc(x, y + bounceOffset, size/2, 0, Math.PI * 2);
