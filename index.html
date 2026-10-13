@@ -2,64 +2,72 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <style>
-    body { margin: 0; overflow: hidden; background: transparent; }
+html, body {
+    width: 1080px;
+    height: 1920px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: transparent;
+}
 
-    #canvas { position: absolute; top: 0; left: 0; }
-    #fx { position: absolute; width: 1080px; height: 1920px; pointer-events: none; }
+#canvas { position: absolute; top: 0; left: 0; }
+#fx { position: absolute; width: 1080px; height: 1920px; pointer-events: none; }
 
-    /* ZOOM MARE */
-    .big-profile {
-        position: absolute;
-        width: 700px;
-        height: 700px;
-        border-radius: 40px;
-        object-fit: cover;
-        border: 18px solid transparent;
-        animation: bigProfile 5s ease-out forwards;
-    }
+/* ZOOM MARE */
+.big-profile {
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    border-radius: 40px;
+    object-fit: cover;
+    border: 18px solid transparent;
+    animation: bigProfile 5s ease-out forwards;
+}
 
-    @keyframes bigProfile {
-        0% { transform: scale(0.1); opacity: 0; }
-        20% { transform: scale(1.25); opacity: 1; }
-        40% { transform: scale(1.05); opacity: 1; }
-        100% { transform: scale(1); opacity: 0; }
-    }
+@keyframes bigProfile {
+    0% { transform: scale(0.1); opacity: 0; }
+    20% { transform: scale(1.25); opacity: 1; }
+    40% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
+}
 
-    .big-name-inside {
-        position: absolute;
-        bottom: 20px;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        font-weight: 900;
-        color: white;
-        text-shadow: 0 0 15px black;
-        pointer-events: none;
-        font-size: 60px;
-        padding: 0 20px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: clip;
-        transform-origin: center;
-    }
+.big-name-inside {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-weight: 900;
+    color: white;
+    text-shadow: 0 0 15px black;
+    pointer-events: none;
+    font-size: 60px;
+    padding: 0 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    transform-origin: center;
+}
 
-    /* EXPLOZIE CADOU */
-    @keyframes explode {
-        0% { transform: scale(0.1); opacity: 1; }
-        50% { transform: scale(2.5); opacity: 1; }
-        100% { transform: scale(3.5); opacity: 0; }
-    }
+/* EXPLOZIE CADOU */
+@keyframes explode {
+    0% { transform: scale(0.1); opacity: 1; }
+    50% { transform: scale(2.5); opacity: 1; }
+    100% { transform: scale(3.5); opacity: 0; }
+}
 
-    .explosion {
-        position: absolute;
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        background: radial-gradient(circle, white, yellow, red);
-        animation: explode 0.7s ease-out forwards;
-        pointer-events: none;
-    }
+.explosion {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, white, yellow, red);
+    animation: explode 0.7s ease-out forwards;
+    pointer-events: none;
+}
 </style>
 </head>
 
@@ -151,8 +159,7 @@ function spawnFloatingAvatar(url, uid) {
             y: Math.random() * 1920,
             vx: (Math.random() * 2 - 1),
             vy: (Math.random() * 2 - 1),
-            size: 220,          // 🔥 aproape dublu
-            bounce: 0,
+            size: 220,
             fade: 1,
             fading: false
         });
@@ -302,6 +309,12 @@ function spawnBigProfile(url, username) {
 }
 
 /* WEBSOCKET */
+function getProfileUrl(data) {
+    return data.profilePictureUrl ||
+           data.userDetails?.profilePictureUrls?.[0] ||
+           null;
+}
+
 const ws = new WebSocket("ws://localhost:62024");
 
 ws.onmessage = (event) => {
